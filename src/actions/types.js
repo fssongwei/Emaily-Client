@@ -1,0 +1,1 @@
+export const FETCH_AUTH_STATUS = "FETCH_AUTH_STATUS";
