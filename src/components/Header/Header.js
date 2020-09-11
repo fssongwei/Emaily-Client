@@ -4,13 +4,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import DraftsIcon from "@material-ui/icons/Drafts";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import HeaderStatus from "./HeaderStatus";
 
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { logOut } from "../actions";
+import { logOut } from "../../actions";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -20,38 +20,12 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(1),
   },
   title: {
     flexGrow: 1,
   },
 }));
-
-const renderButtons = (user, logOut) => {
-  if (user === null) return;
-  if (!user.isLogin)
-    return (
-      <Button color="inherit" component={Link} to="/login">
-        Login
-      </Button>
-    );
-
-  let welcomeText = user.profile.displayName
-    ? `Welcome, ${user.profile.displayName}`
-    : "";
-
-  return (
-    <>
-      <label style={{ paddingRight: "1em" }}>{welcomeText} </label>
-      <Button color="inherit" component={Link} to="/dashboard">
-        Dashboard
-      </Button>
-      <Button color="inherit" onClick={logOut}>
-        Logout
-      </Button>
-    </>
-  );
-};
 
 const Header = (props) => {
   const classes = useStyles();
@@ -67,12 +41,12 @@ const Header = (props) => {
             component={Link}
             to="/"
           >
-            <DraftsIcon />
+            <ShoppingCartIcon fontSize="large" />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Emaily
+            iShop
           </Typography>
-          {renderButtons(props.user, props.logOut)}
+          <HeaderStatus />
         </Toolbar>
       </AppBar>
     </div>
