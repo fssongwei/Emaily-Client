@@ -95,46 +95,25 @@ const CreateProductForm = ({ handleSubmit, title, product }) => {
           <h1>{title}</h1>
           <hr />
           <h2>1. Product Info</h2>
-          <Field
-            name="name"
-            component={renderInput}
-            label="Product Name"
-            // data={product ? product.name : ""}
-          />
+          <Field name="name" component={renderInput} label="Product Name" />
           <Field
             name="intro"
             component={renderInput}
             label="Introduction"
             rows="4"
-            // data={product ? product.intro : ""}
           />
-          <Field
-            name="price"
-            component={renderInput}
-            label="Price"
-            // data={product ? product.price : ""}
-          />
-          <Field
-            name="quantity"
-            component={renderInput}
-            label="Quantity"
-            // data={product ? product.quantity : ""}
-          />
+          <Field name="price" component={renderInput} label="Price" />
+          <Field name="quantity" component={renderInput} label="Quantity" />
           <Field
             name="category"
             component={renderSelector}
             label="Category"
             items={categories}
-            // data={product ? product.category : ""}
           />
 
           <div style={{ position: "relative", margin: "3em 0" }}>
             <h2>2. Product Photos</h2>
-            <FieldArray
-              name="pics"
-              component={renderPicsUpdate}
-              // data={product ? product.pics : []}
-            />
+            <FieldArray name="pics" component={renderPicsUpdate} />
           </div>
 
           <div style={{ margin: "3em 0" }}>
@@ -154,18 +133,19 @@ const CreateProductForm = ({ handleSubmit, title, product }) => {
   );
 };
 
-// const validate = (values) => {
-//   const errors = {};
-//   if (!values.name) errors.name = "Required";
-//   if (!values.intro) errors.intro = "Required";
-//   if (!values.price) errors.price = "Required";
-//   if (!values.quantity) errors.quantity = "Required";
-//   return errors;
-// };
+const validate = (values) => {
+  const errors = {};
+  if (!values.name) errors.name = "Required";
+  if (!values.intro) errors.intro = "Required";
+  if (!values.price) errors.price = "Required";
+  if (!values.quantity) errors.quantity = "Required";
+  return errors;
+};
 
 const CreateProductFormWrapped = reduxForm({
   form: "CreateProduct",
   enableReinitialize: true,
+  validate,
 })(CreateProductForm);
 
 export default CreateProductFormWrapped;

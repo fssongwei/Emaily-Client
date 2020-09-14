@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import FlashMessage from "react-flash-message";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 

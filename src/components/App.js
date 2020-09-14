@@ -9,7 +9,7 @@ import Landing from "./Landing";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
 import SellDashboard from "./SellDashboard/SellDashboard";
-import CreateProduct from "./SellDashboard/CreateProduct";
+import CreateProduct from "./Products/ProductCreate";
 import ProductDetail from "./Products/ProductDetail";
 import ProductEdit from "./Products/ProductEdit";
 import Message from "./Message";

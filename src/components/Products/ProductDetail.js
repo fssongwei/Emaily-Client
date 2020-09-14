@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { fetchAuthStatus, fetchProduct, deleteProduct } from "../../actions";
+import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { popMessage } from "../../actions";
+import useProduct from "../../hooks/useProduct";
+import useUser from "../../hooks/useUser";
+import { deleteProduct } from "./ProductHooks";
 
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Container from "@material-ui/core/Container";
@@ -12,9 +14,10 @@ import CardContent from "@material-ui/core/CardContent";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-const getPictures = (pics) => {
+import { Link } from "react-router-dom";
+
+const renderPictures = (pics) => {
   return (
-    // <div style={{ maxWidth: "600px", margin: "0 auto" }}>
     <Carousel indicators={false}>
       {pics.map((pic, i) => (
         <img
@@ -25,13 +28,11 @@ const getPictures = (pics) => {
         />
       ))}
     </Carousel>
-    // </div>
   );
 };
 
-const getButtons = (user, product, deleteProduct) => {
-  const isLogin = user !== undefined && user !== null && user !== false;
-  if (!isLogin || product.owner !== user._id) {
+const renderButtons = (user, product, popMessage) => {
+  if (!user || product.owner !== user._id) {
     if (product.quantity === 0) {
       return (
         <Button size="small" disabled>
@@ -63,7 +64,7 @@ const getButtons = (user, product, deleteProduct) => {
       <Button
         variant="contained"
         color="secondary"
-        onClick={() => deleteProduct(product._id)}
+        onClick={() => deleteProduct(product._id, popMessage)}
       >
         Delete
       </Button>
@@ -71,21 +72,17 @@ const getButtons = (user, product, deleteProduct) => {
   );
 };
 
-const ProductDetail = (props) => {
-  let productId = props.match.params.id;
-  const [product, setProduct] = useState(null);
+const ProductDetail = ({ match, popMessage }) => {
+  const productId = match.params.id;
+  const [loadingProduct, product] = useProduct(productId);
+  const [loadingUser, user] = useUser();
 
-  useEffect(() => {
-    fetchProduct(productId, setProduct);
-    fetchAuthStatus();
-  }, [productId]);
-
-  if (product === null) return <LinearProgress />;
+  if (loadingProduct || loadingUser) return <LinearProgress />;
   return (
     <Container style={{ maxWidth: "600px", margin: "0 auto" }}>
       <Card style={{ marginTop: "2em" }}>
         <CardContent style={{ padding: 0 }}>
-          {getPictures(product.pics)}
+          {renderPictures(product.pics)}
         </CardContent>
         <CardContent>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -101,17 +98,11 @@ const ProductDetail = (props) => {
           </Typography>
         </CardContent>
         <CardActions style={{ display: "flex", justifyContent: "flex-end" }}>
-          {getButtons(props.user, product, props.deleteProduct)}
+          {renderButtons(user, product, popMessage)}
         </CardActions>
       </Card>
     </Container>
   );
 };
 
-const mapStateToProps = (state) => {
-  return { user: state.auth };
-};
-
-export default connect(mapStateToProps, { fetchAuthStatus, deleteProduct })(
-  ProductDetail
-);
+export default connect(null, { popMessage })(ProductDetail);

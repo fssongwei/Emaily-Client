@@ -10,21 +10,18 @@ import history from "../history";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
-const Dashboard = (props) => {
+const Dashboard = ({ user, fetchAuthStatus }) => {
   useEffect(() => {
-    props.fetchAuthStatus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    fetchAuthStatus();
+  }, [fetchAuthStatus]);
 
-  if (props.user === null) return <LinearProgress />;
-  if (!props.user) history.push("/");
+  if (user === null) return <LinearProgress />;
+  if (!user) history.push("/");
 
   return (
     <Container>
-      <h1>Welcome, {props.user.name} </h1>
-
-      <div>current balance: {props.user ? props.user.balance : ""}</div>
-
+      <h1>Welcome, {user.name} </h1>
+      <div>current balance: {user ? user.balance : ""}</div>
       <Elements stripe={stripePromise}>
         <InjectedCheckoutForm />
       </Elements>
