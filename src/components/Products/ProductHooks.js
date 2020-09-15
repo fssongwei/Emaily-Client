@@ -18,7 +18,7 @@ export const onProductUpdate = (productId, popMessage) => async (values) => {
   }
 };
 
-export const useOwnedProduct = (productId, popMessage) => {
+export const useOwnedProduct = (productId, loadUser, popMessage) => {
   const [loadingProduct, product] = useProduct(productId);
   const [loadingUser, user] = useUser();
   const loading = loadingProduct || loadingUser;

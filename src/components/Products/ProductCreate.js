@@ -1,15 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
 import { popMessage } from "../../actions";
-import useUser from "../../hooks/useUser";
 import { onProductCreate } from "./ProductHooks";
 
 import LinearProgress from "@material-ui/core/LinearProgress";
 import history from "../../history";
 import CreateProductForm from "./ProductForm";
 
-const CreateProduct = ({ popMessage }) => {
-  const [loading, user] = useUser();
+const CreateProduct = ({ loadUser, popMessage }) => {
+  const [loading, user] = loadUser;
 
   if (loading) return <LinearProgress />;
   if (!user) history.push("/");
@@ -22,4 +21,8 @@ const CreateProduct = ({ popMessage }) => {
   );
 };
 
-export default connect(null, { popMessage })(CreateProduct);
+const mapStateToProps = (state) => {
+  return { loadUser: state.user };
+};
+
+export default connect(mapStateToProps, { popMessage })(CreateProduct);

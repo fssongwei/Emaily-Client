@@ -14,9 +14,9 @@ import ProductDetail from "./Products/ProductDetail";
 import ProductEdit from "./Products/ProductEdit";
 import Message from "./Message";
 
-const App = (props) => {
+const App = ({ fetchAuthStatus }) => {
   useEffect(() => {
-    props.fetchAuthStatus();
+    fetchAuthStatus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -38,8 +38,4 @@ const App = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return { user: state.auth };
-};
-
-export default connect(mapStateToProps, { fetchAuthStatus })(App);
+export default connect(null, { fetchAuthStatus })(App);

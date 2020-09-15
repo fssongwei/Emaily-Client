@@ -8,8 +8,9 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logOut } from "../../actions";
 
-const HeaderStatus = ({ user, logOut }) => {
+const HeaderStatus = ({ loadUser, logOut }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [loading, user] = loadUser;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -19,7 +20,7 @@ const HeaderStatus = ({ user, logOut }) => {
     setAnchorEl(null);
   };
 
-  if (user === null) return <CircularProgress />;
+  if (loading) return <CircularProgress />;
   if (!user)
     return (
       <Button color="inherit" component={Link} to="/login">
@@ -58,7 +59,7 @@ const HeaderStatus = ({ user, logOut }) => {
 };
 
 const mapStateToProps = (state) => {
-  return { user: state.auth };
+  return { loadUser: state.user };
 };
 
 export default connect(mapStateToProps, { logOut })(HeaderStatus);

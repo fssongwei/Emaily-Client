@@ -1,21 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import InjectedCheckoutForm from "./payment/InjectedCheckoutForm";
 import Container from "@material-ui/core/Container";
 import { connect } from "react-redux";
-import { fetchAuthStatus } from "../actions";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import history from "../history";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
-const Dashboard = ({ user, fetchAuthStatus }) => {
-  useEffect(() => {
-    fetchAuthStatus();
-  }, [fetchAuthStatus]);
-
-  if (user === null) return <LinearProgress />;
+const Dashboard = ({ loadUser }) => {
+  const [loading, user] = loadUser;
+  if (loading) return <LinearProgress />;
   if (!user) history.push("/");
 
   return (
@@ -30,7 +26,7 @@ const Dashboard = ({ user, fetchAuthStatus }) => {
 };
 
 const mapStateToProps = (state) => {
-  return { user: state.auth };
+  return { loadUser: state.user };
 };
 
-export default connect(mapStateToProps, { fetchAuthStatus })(Dashboard);
+export default connect(mapStateToProps, null)(Dashboard);

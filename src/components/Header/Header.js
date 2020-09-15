@@ -6,7 +6,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import HeaderStatus from "./HeaderStatus";
+import HeaderStatus from "./HeaderMenu";
 
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -53,8 +53,4 @@ const Header = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return { user: state.auth };
-};
-
-export default connect(mapStateToProps, { logOut })(Header);
+export default connect(null, { logOut })(Header);

@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { popMessage } from "../../actions";
 import useProduct from "../../hooks/useProduct";
-import useUser from "../../hooks/useUser";
 import { deleteProduct } from "./ProductHooks";
 
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -16,7 +15,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
 
-const renderPictures = (pics) => {
+const ProductDetailPics = ({ pics }) => {
   return (
     <Carousel indicators={false}>
       {pics.map((pic, i) => (
@@ -31,7 +30,7 @@ const renderPictures = (pics) => {
   );
 };
 
-const renderButtons = (user, product, popMessage) => {
+const ProductDetailOps = ({ user, product, popMessage }) => {
   if (!user || product.owner !== user._id) {
     if (product.quantity === 0) {
       return (
@@ -72,17 +71,17 @@ const renderButtons = (user, product, popMessage) => {
   );
 };
 
-const ProductDetail = ({ match, popMessage }) => {
+const ProductDetail = ({ loadUser, match, popMessage }) => {
   const productId = match.params.id;
   const [loadingProduct, product] = useProduct(productId);
-  const [loadingUser, user] = useUser();
+  const [loadingUser, user] = loadUser;
 
   if (loadingProduct || loadingUser) return <LinearProgress />;
   return (
     <Container style={{ maxWidth: "600px", margin: "0 auto" }}>
       <Card style={{ marginTop: "2em" }}>
         <CardContent style={{ padding: 0 }}>
-          {renderPictures(product.pics)}
+          <ProductDetailPics pics={product.pics} />
         </CardContent>
         <CardContent>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -98,11 +97,19 @@ const ProductDetail = ({ match, popMessage }) => {
           </Typography>
         </CardContent>
         <CardActions style={{ display: "flex", justifyContent: "flex-end" }}>
-          {renderButtons(user, product, popMessage)}
+          <ProductDetailOps
+            user={user}
+            product={product}
+            popMessage={popMessage}
+          />
         </CardActions>
       </Card>
     </Container>
   );
 };
 
-export default connect(null, { popMessage })(ProductDetail);
+const mapStateToProps = (state) => {
+  return { loadUser: state.user };
+};
+
+export default connect(mapStateToProps, { popMessage })(ProductDetail);

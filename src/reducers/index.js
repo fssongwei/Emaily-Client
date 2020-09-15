@@ -7,7 +7,7 @@ import messageReducer from "./messageReducer";
 import { reducer as formReducer } from "redux-form";
 
 export default combineReducers({
-  auth: authReducer,
+  user: authReducer,
   form: formReducer,
   products: productsReducer,
   product: productReducer,

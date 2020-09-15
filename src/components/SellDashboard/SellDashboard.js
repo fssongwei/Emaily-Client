@@ -1,5 +1,5 @@
 import React from "react";
-import useUser from "../../hooks/useUser";
+import { connect } from "react-redux";
 import history from "../../history";
 
 import Container from "@material-ui/core/Container";
@@ -7,8 +7,8 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 
-const SellDashboard = () => {
-  const [loading, user] = useUser();
+const SellDashboard = ({ loadUser }) => {
+  const [loading, user] = loadUser;
   if (loading) return <LinearProgress />;
   if (!user) history.push("/");
 
@@ -24,4 +24,8 @@ const SellDashboard = () => {
   );
 };
 
-export default SellDashboard;
+const mapStateToProps = (state) => {
+  return { loadUser: state.user };
+};
+
+export default connect(mapStateToProps, null)(SellDashboard);
