@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logOut } from "../../actions";
 
-const HeaderStatus = ({ loadUser, logOut }) => {
+const HeaderMenu = ({ loadUser, logOut }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [loading, user] = loadUser;
 
@@ -44,6 +44,13 @@ const HeaderStatus = ({ loadUser, logOut }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
+        <MenuItem>
+          <div>
+            Welcome, <br />
+            <strong>{user.name}</strong>
+          </div>
+        </MenuItem>
+        <hr />
         <MenuItem onClick={handleClose}>iBuy</MenuItem>
         <MenuItem onClick={handleClose} component={Link} to="/iSell">
           iSell
@@ -62,4 +69,4 @@ const mapStateToProps = (state) => {
   return { loadUser: state.user };
 };
 
-export default connect(mapStateToProps, { logOut })(HeaderStatus);
+export default connect(mapStateToProps, { logOut })(HeaderMenu);

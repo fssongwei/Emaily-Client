@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { popMessage } from "../../actions";
+import { popMessage, setCartItem } from "../../actions";
 import useProduct from "../../hooks/useProduct";
 import { deleteProduct } from "./ProductHooks";
+import history from "../../history";
 
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Container from "@material-ui/core/Container";
@@ -30,7 +31,7 @@ const ProductDetailPics = ({ pics }) => {
   );
 };
 
-const ProductDetailOps = ({ user, product, popMessage }) => {
+const ProductDetailOps = ({ user, product, popMessage, setCartItem }) => {
   if (!user || product.owner !== user._id) {
     if (product.quantity === 0) {
       return (
@@ -44,6 +45,12 @@ const ProductDetailOps = ({ user, product, popMessage }) => {
           size="small"
           color="primary"
           startIcon={<AddShoppingCartIcon />}
+          onClick={() => {
+            if (!user) {
+              history.push("/login");
+              popMessage({ status: "warning", text: "Please login first" });
+            } else setCartItem(product, 1);
+          }}
         >
           Add to cart
         </Button>
@@ -71,12 +78,17 @@ const ProductDetailOps = ({ user, product, popMessage }) => {
   );
 };
 
-const ProductDetail = ({ loadUser, match, popMessage }) => {
+const ProductDetail = ({ loadUser, match, popMessage, setCartItem }) => {
   const productId = match.params.id;
   const [loadingProduct, product] = useProduct(productId);
   const [loadingUser, user] = loadUser;
 
   if (loadingProduct || loadingUser) return <LinearProgress />;
+  if (!product) {
+    history.push("/");
+    popMessage({ status: "warning", text: "Product doesn't exists!" });
+    return null;
+  }
   return (
     <Container style={{ maxWidth: "600px", margin: "0 auto" }}>
       <Card style={{ marginTop: "2em" }}>
@@ -101,6 +113,7 @@ const ProductDetail = ({ loadUser, match, popMessage }) => {
             user={user}
             product={product}
             popMessage={popMessage}
+            setCartItem={setCartItem}
           />
         </CardActions>
       </Card>
@@ -112,4 +125,6 @@ const mapStateToProps = (state) => {
   return { loadUser: state.user };
 };
 
-export default connect(mapStateToProps, { popMessage })(ProductDetail);
+export default connect(mapStateToProps, { popMessage, setCartItem })(
+  ProductDetail
+);

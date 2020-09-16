@@ -11,10 +11,10 @@ const useProduct = (productId) => {
           `${process.env.REACT_APP_API_BASE_URL}/products/${productId}`
         );
         setProduct(response.data);
-        setLoading(false);
       } catch (error) {
-        throw error;
+        console.log(error);
       }
+      setLoading(false);
     };
     fetchProduct();
   }, [productId]);

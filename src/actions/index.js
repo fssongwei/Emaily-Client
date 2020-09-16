@@ -1,4 +1,4 @@
-import { FETCH_AUTH_STATUS, POP_MESSAGE } from "./types";
+import { FETCH_AUTH_STATUS, POP_MESSAGE, SET_CART } from "./types";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
@@ -24,4 +24,11 @@ export const logOut = () => async (dispatch) => {
 
 export const popMessage = (message) => {
   return { type: POP_MESSAGE, message: message };
+};
+
+export const setCartItem = (product, amount) => {
+  let payload = {};
+  payload.product = product;
+  payload.amount = amount;
+  return { type: SET_CART, payload: payload };
 };
