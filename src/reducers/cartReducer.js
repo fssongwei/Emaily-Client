@@ -1,6 +1,10 @@
-import { SET_CART } from "../actions/types";
+import { SET_CART, FETCH_CART_ITEMS } from "../actions/types";
 
-const cartReducer = (state = [], action) => {
+const cartReducer = (state = null, action) => {
+  if (action.type === FETCH_CART_ITEMS) {
+    return action.items;
+  }
+
   if (action.type === SET_CART) {
     let updateItem = action.payload;
     let newState = [...state];

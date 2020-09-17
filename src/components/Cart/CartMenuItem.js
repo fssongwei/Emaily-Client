@@ -8,6 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import { Link } from "react-router-dom";
+import Typography from "@material-ui/core/Typography";
 
 const CartMenuItem = ({ item }) => {
   const [amount, setAmount] = useState(item.amount);
@@ -30,7 +31,8 @@ const CartMenuItem = ({ item }) => {
         style={{
           display: "flex",
           justifyContent: "flex-start",
-          width: "250px",
+          alignItems: "center",
+          width: "100%",
         }}
       >
         <div className="img">
@@ -52,7 +54,7 @@ const CartMenuItem = ({ item }) => {
             flexGrow: 1,
           }}
         >
-          <div className="label" style={{ textAlign: "right" }}>
+          <div className="label">
             <strong>{item.product.name}</strong>
           </div>
           <div
@@ -62,39 +64,72 @@ const CartMenuItem = ({ item }) => {
               alignItems: "center",
               justifyContent: "space-between",
               width: "100%",
+              minWidth: "250px",
             }}
           >
-            <div style={{ marginLeft: "1em" }}>
-              <IconButton aria-label="delete" size="small" onClick={removeItem}>
-                <DeleteIcon fontSize="small" />
-              </IconButton>
+            <div>
+              <h4 style={{ margin: "0.5em" }}>${item.product.price}</h4>
             </div>
             <div>
               <IconButton
+                aria-label="delete"
+                size="small"
+                onClick={(e) => {
+                  e.preventDefault();
+                  removeItem();
+                }}
+                style={{ marginRight: "1em" }}
+              >
+                <DeleteIcon fontSize="small" />
+              </IconButton>
+              <IconButton
                 style={{ size: "1em", padding: "0" }}
                 color="primary"
-                onClick={addItem}
+                onClick={(e) => {
+                  e.preventDefault();
+                  addItem();
+                }}
               >
                 <AddIcon />
               </IconButton>
               <input
                 type="number"
-                value={amount}
+                value={item.amount}
                 variant="outlined"
-                style={{ width: "3em" }}
+                style={{
+                  width: "3em",
+                  color: item.amount > item.product.quantity ? "red" : "black",
+                }}
                 onChange={(e) => {
                   if (Number(e.target.value) > 0)
                     setAmount(Number(e.target.value));
                 }}
+                onClick={(e) => e.preventDefault()}
               />
               <IconButton
                 style={{ size: "1em", padding: "0" }}
                 color="primary"
-                onClick={reduceItem}
+                onClick={(e) => {
+                  e.preventDefault();
+                  reduceItem();
+                }}
               >
                 <RemoveIcon />
               </IconButton>
             </div>
+          </div>
+          <div className="label">
+            <Typography
+              variant="caption"
+              display="block"
+              gutterBottom
+              color={
+                item.amount > item.product.quantity ? "secondary" : "inherit"
+              }
+            >
+              remain {item.product.quantity}
+            </Typography>
+            {/* <label>remain {item.product.quantity}</label> */}
           </div>
         </div>
       </div>

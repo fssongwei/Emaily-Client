@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
+import { updateCart } from "./CartHooks";
+import { fetchCartItems } from "../../actions";
 
 import Badge from "@material-ui/core/Badge";
 import Button from "@material-ui/core/Button";
@@ -8,6 +10,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import CartMenuItem from "./CartMenuItem";
+import { Link } from "react-router-dom";
 
 const CartMenuList = React.forwardRef(({ cart }, ref) => {
   if (cart.length === 0) return null;
@@ -16,14 +19,13 @@ const CartMenuList = React.forwardRef(({ cart }, ref) => {
   });
 });
 
-const CartMenu = ({ loadUser, cart }) => {
+const CartMenu = ({ loadUser, cart, fetchCartItems }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const buttonEl = useRef(null);
   const [loading, user] = loadUser;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    console.log(event.currentTarget);
   };
 
   const handleClose = () => {
@@ -31,16 +33,28 @@ const CartMenu = ({ loadUser, cart }) => {
   };
 
   useEffect(() => {
-    setAnchorEl(buttonEl.current);
-
+    if (cart === null) return;
+    // setAnchorEl(buttonEl.current);
+    const update = (cartItems) => updateCart(cartItems);
     const timerID = setTimeout(() => {
-      console.log("updated!");
-    }, 10000);
+      const cartItems = cart.map((item) => {
+        return {
+          productId: item.product._id,
+          amount: item.amount,
+        };
+      });
+      update(cartItems);
+    }, 5000);
 
     return () => {
       clearTimeout(timerID);
     };
   }, [cart]);
+
+  if (cart === null) {
+    fetchCartItems();
+    return null;
+  }
 
   if (loading || !user) return null;
   return (
@@ -74,7 +88,14 @@ const CartMenu = ({ loadUser, cart }) => {
           </MenuItem>
         ) : (
           <MenuItem>
-            <Button variant="contained" color="primary" fullWidth>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              component={Link}
+              to="/checkout"
+              onClick={handleClose}
+            >
               check out
             </Button>
           </MenuItem>
@@ -88,4 +109,4 @@ const mapStateToProps = (state) => {
   return { loadUser: state.user, cart: state.cart };
 };
 
-export default connect(mapStateToProps, null)(CartMenu);
+export default connect(mapStateToProps, { fetchCartItems })(CartMenu);

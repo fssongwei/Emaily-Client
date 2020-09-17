@@ -13,6 +13,7 @@ import CreateProduct from "./Products/ProductCreate";
 import ProductDetail from "./Products/ProductDetail";
 import ProductEdit from "./Products/ProductEdit";
 import Message from "./Message";
+import CheckOut from "./Cart/Checkout";
 
 const App = ({ fetchAuthStatus }) => {
   useEffect(() => {
@@ -33,6 +34,7 @@ const App = ({ fetchAuthStatus }) => {
         <Route path="/iSell/createProduct" exact component={CreateProduct} />
         <Route path="/products/:id" exact component={ProductDetail} />
         <Route path="/products/edit/:id" exact component={ProductEdit} />
+        <Route path="/checkout" exact component={CheckOut} />
       </div>
     </Router>
   );

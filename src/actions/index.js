@@ -1,4 +1,9 @@
-import { FETCH_AUTH_STATUS, POP_MESSAGE, SET_CART } from "./types";
+import {
+  FETCH_AUTH_STATUS,
+  POP_MESSAGE,
+  SET_CART,
+  FETCH_CART_ITEMS,
+} from "./types";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
@@ -31,4 +36,13 @@ export const setCartItem = (product, amount) => {
   payload.product = product;
   payload.amount = amount;
   return { type: SET_CART, payload: payload };
+};
+
+export const fetchCartItems = () => async (dispatch) => {
+  try {
+    let res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/cart`);
+    dispatch({ type: FETCH_CART_ITEMS, items: res.data });
+  } catch (error) {
+    console.log(error);
+  }
 };
