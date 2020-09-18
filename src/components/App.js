@@ -13,7 +13,7 @@ import CreateProduct from "./Products/ProductCreate";
 import ProductDetail from "./Products/ProductDetail";
 import ProductEdit from "./Products/ProductEdit";
 import Message from "./Message";
-import CheckOut from "./Cart/Checkout";
+import CheckOut from "./payment/Checkout";
 
 const App = ({ fetchAuthStatus }) => {
   useEffect(() => {

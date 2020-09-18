@@ -19,13 +19,13 @@ const CARD_ELEMENT_OPTIONS = {
   },
 };
 
-function CardSection() {
+const CardSection = () => {
   return (
     <label>
       Card details
       <CardElement options={CARD_ELEMENT_OPTIONS} />
     </label>
   );
-}
+};
 
 export default CardSection;

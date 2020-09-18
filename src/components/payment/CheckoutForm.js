@@ -1,132 +1,123 @@
-import React from "react";
-import { CardElement } from "@stripe/react-stripe-js";
+import React, { useState, useEffect } from "react";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import axios from "axios";
-import { connect } from "react-redux";
-
+import history from "../../history";
+import "./CheckoutForm.css";
 import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-class CheckoutForm extends React.Component {
-  state = { errMsg: "", open: false, hasPaid: false, loading: false };
-  handleSubmit = async (event) => {
-    event.preventDefault();
-    const { stripe, elements } = this.props;
-    this.setState({ loading: true });
+const CheckoutForm = ({ handleNext, handleBack, transaction }) => {
+  const [succeeded, setSucceeded] = useState(false);
+  const [error, setError] = useState(null);
+  const [processing, setProcessing] = useState("");
+  const [disabled, setDisabled] = useState(true);
+  const [clientSecret, setClientSecret] = useState("");
+  const [totalPrice, setTotalPrice] = useState(0);
+  const stripe = useStripe();
+  const elements = useElements();
 
-    if (!stripe || !elements) return;
+  useEffect(() => {
+    if (!transaction) history.push("/");
+    console.log(transaction);
+  }, [transaction]);
 
-    const res = await axios.get(
-      `${process.env.REACT_APP_API_BASE_URL}/payment`
-    );
-    const clientSecret = res.data.client_secret;
+  useEffect(() => {
+    // Create PaymentIntent as soon as the page loads
+    const fetchClientSecret = async () => {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/payment`,
+        transaction
+      );
+      const { client_secret, totalPrice } = response.data;
+      setClientSecret(client_secret);
+      setTotalPrice(totalPrice);
+    };
+    fetchClientSecret();
+  }, [transaction]);
 
-    const result = await stripe.confirmCardPayment(clientSecret, {
+  useEffect(() => {
+    if (succeeded) handleNext();
+  }, [succeeded, handleNext]);
+
+  const cardStyle = {
+    style: {
+      base: {
+        color: "#32325d",
+        fontFamily: "Arial, sans-serif",
+        fontSmoothing: "antialiased",
+        fontSize: "16px",
+        "::placeholder": {
+          color: "#32325d",
+        },
+      },
+      invalid: {
+        color: "#fa755a",
+        iconColor: "#fa755a",
+      },
+    },
+  };
+
+  const handleChange = async (event) => {
+    // Listen for changes in the CardElement
+    // and display any errors as the customer types their card details
+    setDisabled(event.empty);
+    setError(event.error ? event.error.message : "");
+  };
+
+  const handleSubmit = async (ev) => {
+    ev.preventDefault();
+    setProcessing(true);
+
+    const payload = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
         card: elements.getElement(CardElement),
-        billing_details: {
-          name: this.props.user._id,
-        },
       },
     });
 
-    if (result.error) {
-      // Show error to your customer (e.g., insufficient funds)
-      console.log(result.error);
-      this.setState({ errMsg: result.error.message });
+    if (payload.error) {
+      setError(`Payment failed ${payload.error.message}`);
+      setProcessing(false);
     } else {
-      // The payment has been processed!
-      if (result.paymentIntent.status === "succeeded") {
-        console.log("payment succeed");
-        this.setState({ hasPaid: true });
-      }
+      setError(null);
+      setProcessing(false);
+      setSucceeded(true);
     }
-    this.setState({ loading: false });
   };
 
-  renderForm = () => {
+  if (!clientSecret)
     return (
-      <form onSubmit={this.handleSubmit}>
-        <DialogTitle id="max-width-dialog-title">Add credit: $5</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Credit or Debit card</DialogContentText>
-          <CardElement />
-
-          <DialogContentText>{this.state.errMsg}</DialogContentText>
-        </DialogContent>
-        {this.state.loading && (
-          <DialogContent style={{ textAlign: "center" }}>
-            <CircularProgress style={{ padding: "1em" }} />
-            <DialogContentText>Payment processing ...</DialogContentText>
-          </DialogContent>
-        )}
-        <DialogActions>
-          <Button
-            onClick={() => this.setState({ open: false })}
-            color="primary"
-          >
-            Cancel
-          </Button>
-          <Button
-            disabled={!this.props.stripe}
-            color="primary"
-            variant="contained"
-            type="submit"
-          >
-            Pay
-          </Button>
-        </DialogActions>
-      </form>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <CircularProgress style={{ margin: "0 auto" }} />
+      </div>
     );
-  };
 
-  renderSuccess = () => {
-    return (
-      <>
-        <DialogTitle id="max-width-dialog-title">Pay success</DialogTitle>
-        <DialogContent>
-          <DialogContentText>You have add $5 to your account</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button color="primary" href="/dashboard">
-            Close
-          </Button>
-        </DialogActions>
-      </>
-    );
-  };
-
-  render() {
-    return (
-      <>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => this.setState({ open: true })}
-        >
-          Add Credit
-        </Button>
-
-        <Dialog
-          fullWidth={true}
-          maxWidth="md"
-          open={this.state.open}
-          onClose={() => this.setState({ open: false })}
-          aria-labelledby="max-width-dialog-title"
-        >
-          {this.state.hasPaid ? this.renderSuccess() : this.renderForm()}
-        </Dialog>
-      </>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return { user: state.auth };
+  return (
+    <form id="payment-form" onSubmit={handleSubmit}>
+      <h1>Pay: ${totalPrice} </h1>
+      <CardElement
+        id="card-element"
+        options={cardStyle}
+        onChange={handleChange}
+      />
+      <Button
+        variant="contained"
+        color="primary"
+        disabled={processing || disabled || succeeded}
+        id="submit"
+        fullWidth
+        type="submit"
+      >
+        {processing ? <CircularProgress size="2em" /> : "Pay"}
+      </Button>
+      {/* Show any error that happens when processing the payment */}
+      {error && (
+        <div className="card-error" role="alert">
+          {error}
+        </div>
+      )}
+      <Button onClick={handleBack}>Back</Button>
+    </form>
+  );
 };
 
-export default connect(mapStateToProps, null)(CheckoutForm);
+export default CheckoutForm;
