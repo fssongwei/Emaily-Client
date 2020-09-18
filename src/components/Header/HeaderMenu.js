@@ -51,7 +51,9 @@ const HeaderMenu = ({ loadUser, logOut }) => {
           </div>
         </MenuItem>
         <hr />
-        <MenuItem onClick={handleClose}>iBuy</MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to="/iBuy">
+          iBuy
+        </MenuItem>
         <MenuItem onClick={handleClose} component={Link} to="/iSell">
           iSell
         </MenuItem>

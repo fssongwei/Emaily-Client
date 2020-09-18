@@ -8,7 +8,9 @@ import Header from "./Header/Header";
 import Landing from "./Landing";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
-import SellDashboard from "./SellDashboard/SellDashboard";
+import SellDashboard from "./SellDashboard/iSell";
+import IBuy from "./SellDashboard/IBuy";
+import OrderDetail from "./SellDashboard/OrderDetail";
 import CreateProduct from "./Products/ProductCreate";
 import ProductDetail from "./Products/ProductDetail";
 import ProductEdit from "./Products/ProductEdit";
@@ -32,6 +34,9 @@ const App = ({ fetchAuthStatus }) => {
 
         <Route path="/iSell" exact component={SellDashboard} />
         <Route path="/iSell/createProduct" exact component={CreateProduct} />
+        <Route path="/iBuy" exact component={IBuy} />
+        <Route path="/order" exact component={OrderDetail} />
+
         <Route path="/products/:id" exact component={ProductDetail} />
         <Route path="/products/edit/:id" exact component={ProductEdit} />
         <Route path="/checkout" exact component={CheckOut} />
