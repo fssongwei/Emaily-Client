@@ -22,7 +22,7 @@ const OAuthPanel = () => {
 
   return (
     <div style={{ marginTop: "2em" }}>
-      <div style={{ textAlign: "center", margin: "1em" }}>or you can</div>
+      {/* <div style={{ textAlign: "center", margin: "1em" }}>or you can</div> */}
       <Button
         type="submit"
         fullWidth

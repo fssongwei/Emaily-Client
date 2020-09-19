@@ -13,8 +13,9 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import Typography from "@material-ui/core/Typography";
 
-import categories from "../assests/categories";
+import categories from "../../resources/categories";
 
 const renderInput = ({ input, label, meta, rows }) => {
   return (
@@ -91,28 +92,38 @@ const CreateProductForm = ({ handleSubmit, title, product }) => {
   return (
     <Container>
       <form onSubmit={handleSubmit}>
-        <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-          <h1>{title}</h1>
-          <hr />
-          <h2>1. Product Info</h2>
-          <Field name="name" component={renderInput} label="Product Name" />
-          <Field
-            name="intro"
-            component={renderInput}
-            label="Introduction"
-            rows="4"
-          />
-          <Field name="price" component={renderInput} label="Price" />
-          <Field name="quantity" component={renderInput} label="Quantity" />
-          <Field
-            name="category"
-            component={renderSelector}
-            label="Category"
-            items={categories}
-          />
+        <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+          <div style={{ margin: "2em 0" }}>
+            <Typography variant="h4" gutterBottom>
+              {title}
+            </Typography>
+            <hr />
+          </div>
+          <div style={{ margin: "2em 0" }}>
+            <Typography variant="h5" gutterBottom>
+              Product Info
+            </Typography>
+            <Field name="name" component={renderInput} label="Product Name" />
+            <Field
+              name="intro"
+              component={renderInput}
+              label="Introduction"
+              rows="4"
+            />
+            <Field name="price" component={renderInput} label="Price" />
+            <Field name="quantity" component={renderInput} label="Quantity" />
+            <Field
+              name="category"
+              component={renderSelector}
+              label="Category"
+              items={categories}
+            />
+          </div>
 
-          <div style={{ position: "relative", margin: "3em 0" }}>
-            <h2>2. Product Photos</h2>
+          <div style={{ position: "relative", margin: "2em 0" }}>
+            <Typography variant="h5" gutterBottom>
+              Product Photos
+            </Typography>
             <FieldArray name="pics" component={renderPicsUpdate} />
           </div>
 

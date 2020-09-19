@@ -61,7 +61,7 @@ const OrderDetail = ({ location }) => {
           <Typography gutterBottom variant="h5" component="h2">
             Shipping Address
           </Typography>
-          <p>
+          <Typography variant="body1" gutterBottom>
             {order.address.firstName} {order.address.lastName}
             <br />
             {order.address.address1} <br />
@@ -69,19 +69,19 @@ const OrderDetail = ({ location }) => {
             {order.address.city}, {order.address.state}, {order.address.zip}
             <br />
             {order.address.country}
-          </p>
+          </Typography>
 
           {(order.trackCode || order.shipmentProvider) && (
             <div style={{ marginTop: "2em" }}>
               <Typography gutterBottom variant="h5" component="h2">
                 Tracking
               </Typography>
-              <p>
+              <Typography variant="body1" gutterBottom>
                 <strong>Tracking Code</strong>:{" "}
                 {order.trackCode || "unavaliable"} <br />{" "}
                 <strong>Shipment Provider</strong>:{" "}
                 {order.shipmentProvider || "unavaliable"}{" "}
-              </p>
+              </Typography>
             </div>
           )}
         </CardContent>

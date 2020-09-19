@@ -65,6 +65,7 @@ const CartMenu = ({ loadUser, cart, fetchCartItems }) => {
         aria-label="menu"
         onClick={handleClick}
         ref={buttonEl}
+        style={{ margin: "0 1em" }}
       >
         <Badge
           badgeContent={cart.length}

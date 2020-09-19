@@ -24,7 +24,7 @@ const ProductDetailPics = ({ pics }) => {
           key={i}
           src={pic}
           alt="pic"
-          style={{ width: "100%", height: "300px", objectFit: "cover" }}
+          style={{ width: "100%", height: "400px", objectFit: "cover" }}
         />
       ))}
     </Carousel>
@@ -90,7 +90,7 @@ const ProductDetail = ({ loadUser, match, popMessage, setCartItem }) => {
     return null;
   }
   return (
-    <Container style={{ maxWidth: "600px", margin: "0 auto" }}>
+    <Container style={{ maxWidth: "800px", margin: "0 auto" }}>
       <Card style={{ marginTop: "2em" }}>
         <CardContent style={{ padding: 0 }}>
           <ProductDetailPics pics={product.pics} />
@@ -104,7 +104,7 @@ const ProductDetail = ({ loadUser, match, popMessage, setCartItem }) => {
               {`$${product.price}`}
             </Typography>
           </div>
-          <Typography variant="body2" component="p">
+          <Typography variant="body1" gutterBottom>
             {product.intro}
           </Typography>
         </CardContent>

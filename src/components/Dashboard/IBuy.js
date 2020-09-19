@@ -5,6 +5,7 @@ import history from "../../history";
 import Container from "@material-ui/core/Container";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import BuyList from "./BuyList";
+import Typography from "@material-ui/core/Typography";
 
 const SellDashboard = ({ loadUser }) => {
   const [loadingUser, user] = loadUser;
@@ -13,10 +14,18 @@ const SellDashboard = ({ loadUser }) => {
 
   return (
     <Container>
-      <h2>Welcome, {user.name} </h2>
+      <div style={{ margin: "2em 0" }}>
+        <Typography variant="h4" gutterBottom>
+          Welcome, {user.name}
+        </Typography>
+      </div>
 
-      <h3>Your Purchases</h3>
-      <BuyList />
+      <div style={{ margin: "2em 0" }}>
+        <Typography variant="h5" gutterBottom>
+          Your Purchases
+        </Typography>
+        <BuyList />
+      </div>
     </Container>
   );
 };

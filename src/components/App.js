@@ -5,17 +5,16 @@ import { fetchAuthStatus } from "../actions";
 import { connect } from "react-redux";
 
 import Header from "./Header/Header";
-import Landing from "./Landing";
-import Login from "./Login";
-import Dashboard from "./Dashboard";
-import SellDashboard from "./SellDashboard/iSell";
-import IBuy from "./SellDashboard/IBuy";
-import OrderDetail from "./SellDashboard/OrderDetail";
+import Landing from "./Landing/Landing";
+import Login from "./Authentication/Login";
+import SellDashboard from "./Dashboard/iSell";
+import IBuy from "./Dashboard/IBuy";
+import OrderDetail from "./Dashboard/OrderDetail";
 import CreateProduct from "./Products/ProductCreate";
 import ProductDetail from "./Products/ProductDetail";
 import ProductEdit from "./Products/ProductEdit";
 import Message from "./Message";
-import CheckOut from "./payment/Checkout";
+import CheckOut from "./Checkout/Checkout";
 
 const App = ({ fetchAuthStatus }) => {
   useEffect(() => {
@@ -30,7 +29,6 @@ const App = ({ fetchAuthStatus }) => {
         <Message />
         <Route path="/" exact component={Landing} />
         <Route path="/login" exact component={Login} />
-        <Route path="/dashboard" exact component={Dashboard} />
 
         <Route path="/iSell" exact component={SellDashboard} />
         <Route path="/iSell/createProduct" exact component={CreateProduct} />

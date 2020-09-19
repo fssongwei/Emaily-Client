@@ -3,6 +3,9 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import StoreIcon from "@material-ui/icons/Store";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -52,16 +55,15 @@ const HeaderMenu = ({ loadUser, logOut }) => {
         </MenuItem>
         <hr />
         <MenuItem onClick={handleClose} component={Link} to="/iBuy">
-          iBuy
+          <ShoppingCartIcon /> &nbsp; iBuy
         </MenuItem>
         <MenuItem onClick={handleClose} component={Link} to="/iSell">
-          iSell
+          <StoreIcon /> &nbsp; iSell
         </MenuItem>
         <hr />
-        <MenuItem onClick={handleClose} component={Link} to="/dashboard">
-          My account
+        <MenuItem onClick={logOut}>
+          <PowerSettingsNewIcon /> &nbsp; Logout
         </MenuItem>
-        <MenuItem onClick={logOut}>Logout</MenuItem>
       </Menu>
     </>
   );
