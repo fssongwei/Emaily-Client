@@ -24,6 +24,7 @@ const Searchbar = ({ setQuery }) => {
             </InputAdornment>
           ),
         }}
+        placeholder="Search"
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
