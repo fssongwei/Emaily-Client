@@ -5,6 +5,7 @@ import history from "../../../history";
 import OrderList from "./OrderList";
 import AddressForm from "./AddressForm";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
 const onComfirm = (address, cart, handleNext, setTransaction) => {
   // create transaction
@@ -55,12 +56,16 @@ const OrderDetail = ({ address, cart, handleNext, setTransaction }) => {
   return (
     <>
       <div style={{ marginBottom: "3em" }}>
-        <h3>Shipping Address</h3>
+        <Typography variant="h5" gutterBottom>
+          Shipping Address
+        </Typography>
         <AddressForm />
       </div>
 
       <div style={{ marginBottom: "1em" }}>
-        <h3>Your Order</h3>
+        <Typography variant="h5" gutterBottom>
+          Your Order
+        </Typography>
         <OrderList cart={cart} />
       </div>
 

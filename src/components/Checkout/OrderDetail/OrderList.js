@@ -2,6 +2,7 @@ import React from "react";
 
 import List from "@material-ui/core/List";
 import CartMenuItem from "../../Cart/CartMenuItem";
+import Typography from "@material-ui/core/Typography";
 
 const OrderList = ({ cart }) => {
   if (cart === null || cart === undefined) return null;
@@ -18,7 +19,9 @@ const OrderList = ({ cart }) => {
       </List>
       <hr />
       <div style={{ textAlign: "right" }}>
-        <h2>Total: ${totalPrice}</h2>
+        <Typography variant="h5" gutterBottom>
+          Total: ${totalPrice}
+        </Typography>
       </div>
     </div>
   );

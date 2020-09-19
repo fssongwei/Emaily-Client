@@ -5,6 +5,7 @@ import history from "../../history";
 import "./CheckoutForm.css";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Typography from "@material-ui/core/Typography";
 
 const CheckoutForm = ({ handleNext, handleBack, transaction }) => {
   const [succeeded, setSucceeded] = useState(false);
@@ -93,7 +94,9 @@ const CheckoutForm = ({ handleNext, handleBack, transaction }) => {
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
-      <h1>Pay: ${totalPrice} </h1>
+      <Typography variant="h4" gutterBottom>
+        Pay: ${totalPrice}
+      </Typography>
       <CardElement
         id="card-element"
         options={cardStyle}
